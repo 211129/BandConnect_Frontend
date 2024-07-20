@@ -1,0 +1,11 @@
+{
+  "name": "BandConnectApp",
+  "displayName": "BandConnectApp",
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "c6e4a51f-d0b7-4d39-baad-4fd22e88f9a6"
+      }
+    }
+  }
+}
