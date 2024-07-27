@@ -4,7 +4,7 @@ import AppBar from '../../../../shared/infrastructure/ui/components/AppBar';
 import TabBar from '../components/TabBar';
 import ChatItem from '../components/ChatItem';
 import FloatingButton from '../components/FloatingButton';
-import TermsButton from '../components/TermsButton'; // Importa el nuevo botón
+import TermsButton from '../components/TermsButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ListChatScreenRouteProp } from '../types/chatScreensRouteProps';
 import ChatEntity from '../../../domain/entities/ChatEntity';
@@ -40,10 +40,8 @@ const ListChatScreen = ({ navigation }: ListChatScreenRouteProp) => {
     };
   }, [userCredentials?.uid]);
 
-  const handleLogout = () => {
-    firebaseAuth.signOut().then(() => {
-      navigation.navigate('SignInScreen');
-    });
+  const handleGoBack = () => {
+    navigation.goBack();
   };
 
   const renderChats = () => {
@@ -88,9 +86,9 @@ const ListChatScreen = ({ navigation }: ListChatScreenRouteProp) => {
     <SafeAreaView style={styles.container}>
       <AppBar
         title=""
-        leftIcon="exit-outline"
+        leftIcon="arrow-back"
         rightIcon="search"
-        onLeftPress={() => handleLogout()}
+        onLeftPress={handleGoBack}
         onRightPress={() => console.log('Right icon pressed')}
       />
       <TabBar />
@@ -120,3 +118,5 @@ const styles = StyleSheet.create({
 });
 
 export default ListChatScreen;
+
+

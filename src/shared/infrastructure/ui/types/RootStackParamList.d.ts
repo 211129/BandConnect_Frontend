@@ -30,7 +30,12 @@ type RootStackParamList = {
     performanceVideos: string;
     groupPhotos: string;
   };
+  ListPostsScreen: undefined;
+  CreatePostScreen: undefined;
+  PostDetailsScreen: { postId: string };
+  ProfileScreen: undefined;
+  EditProfileScreen: undefined;
+  UserProfileScreen: { userId: string }; 
 };
 
 export default RootStackParamList;
-

@@ -9,3 +9,4 @@ class UploadImageUseCase {
 }
 
 export default UploadImageUseCase;
+  

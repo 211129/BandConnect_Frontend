@@ -1,22 +1,21 @@
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { firebaseAuth, firebaseDB } from '../../../../../config/firebase.config';
 import { SplashScreenRouteProps } from '../types/sharedScreensRouteProps';
-import { useEffect } from 'react';
-import { useAppDispatch } from '../../redux/store';
+import { useDispatch } from 'react-redux';
 import { AuthActionTypes } from '../../redux/actions/authAction';
 import { doc, getDoc } from 'firebase/firestore';
 import UserEntity from '../../../../users/domain/entities/UserEntity';
 
 const SplashScreen = ({ navigation }: SplashScreenRouteProps) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    checkedLoggedUser();
+    checkLoggedUser();
   }, []);
 
-  const checkedLoggedUser = async () => {
+  const checkLoggedUser = async () => {
     firebaseAuth.onAuthStateChanged(async user => {
       if (user) {
         const userDoc = await getDoc(doc(firebaseDB, 'users', user.uid));
@@ -25,19 +24,30 @@ const SplashScreen = ({ navigation }: SplashScreenRouteProps) => {
           const userEntity = UserEntity.fromFirebase(userDoc.data());
 
           dispatch({ type: AuthActionTypes.LOGIN, payload: userEntity });
-          navigation.navigate('ListChatScreen');
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'ListPostsScreen' }],
+          });
+        } else {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'PreLoginScreen' }],
+          });
         }
       } else {
-        navigation.navigate('SignInScreen');
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'PreLoginScreen' }],
+        });
       }
     });
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Ionicons name="logo-whatsapp" size={100} color="#128C7E" />
+      <Image source={require('../../../../assets/Images/LogoBandConnect.png')} style={styles.logo} />
       <View style={styles.separator} />
-      <ActivityIndicator size="large" />
+      <ActivityIndicator size="large" color="#ffffff" />
     </SafeAreaView>
   );
 };
@@ -47,9 +57,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#000', // Fondo negro
   },
-  text: {
-    fontSize: 24,
+  logo: {
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
   },
   separator: {
     marginVertical: 20,
@@ -59,3 +72,4 @@ const styles = StyleSheet.create({
 });
 
 export default SplashScreen;
+
